@@ -7,10 +7,10 @@ export function UpdatePresets(self: ModuleInstance): void {
 	for (let channel = 1; channel <= self.getRelayCount(); channel++) {
 		presets[`relay_toggle_${channel}`] = {
 			type: 'button',
-			category: 'Relays',
-			name: `Toggle relay ${channel}`,
+			category: 'Coils (Relays)',
+			name: `Toggle coil (relay) ${channel}`,
 			style: {
-				text: `Relay ${channel}`,
+				text: `Coil ${channel}`,
 				size: '14',
 				color: combineRgb(255, 255, 255),
 				bgcolor: combineRgb(32, 32, 32),
@@ -45,10 +45,10 @@ export function UpdatePresets(self: ModuleInstance): void {
 		}
 	}
 
-	presets['all_on'] = {
+	presets.all_on = {
 		type: 'button',
-		category: 'Relays',
-		name: 'All relays on',
+		category: 'Coils (Relays)',
+		name: 'All coils (relays) on',
 		style: {
 			text: 'All On',
 			size: '14',
@@ -72,10 +72,10 @@ export function UpdatePresets(self: ModuleInstance): void {
 		feedbacks: [],
 	}
 
-	presets['all_off'] = {
+	presets.all_off = {
 		type: 'button',
-		category: 'Relays',
-		name: 'All relays off',
+		category: 'Coils (Relays)',
+		name: 'All coils (relays) off',
 		style: {
 			text: 'All Off',
 			size: '14',
@@ -99,7 +99,7 @@ export function UpdatePresets(self: ModuleInstance): void {
 		feedbacks: [],
 	}
 
-	presets['poll_now'] = {
+	presets.poll_now = {
 		type: 'button',
 		category: 'Utility',
 		name: 'Poll now',

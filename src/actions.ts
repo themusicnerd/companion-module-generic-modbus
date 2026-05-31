@@ -1,7 +1,7 @@
 import type { CompanionActionDefinitions } from '@companion-module/base'
 import type { ModuleInstance, RelayAction } from './main.js'
 
-const actionChoices = [
+const relayActionChoices = [
 	{ id: 'on', label: 'On' },
 	{ id: 'off', label: 'Off' },
 	{ id: 'toggle', label: 'Toggle' },
@@ -10,17 +10,44 @@ const actionChoices = [
 export function UpdateActions(self: ModuleInstance): void {
 	const relayChoices = Array.from({ length: self.getRelayCount() }, (_, index) => ({
 		id: index + 1,
-		label: `Relay ${index + 1}`,
+		label: `Coil (Relay) ${index + 1}`,
 	}))
 
 	const actions: CompanionActionDefinitions = {
+		output_relay: {
+			name: 'Set output coil (relay) status',
+			options: [
+				{
+					id: 'output',
+					type: 'textinput',
+					label: 'Coil (Relay) number',
+					default: '1',
+					useVariables: true,
+				},
+				{
+					id: 'status',
+					type: 'textinput',
+					label: 'Status (1 = on, 0 = off)',
+					default: '1',
+					useVariables: true,
+				},
+			],
+			callback: async (event) => {
+				const output = parseInt(await self.parseVariablesInString(String(event.options.output ?? '')), 10)
+				const status = parseInt(await self.parseVariablesInString(String(event.options.status ?? '')), 10)
+
+				if (!Number.isNaN(output) && !Number.isNaN(status)) {
+					await self.executeRelayAction(output, status === 1 ? 'on' : 'off')
+				}
+			},
+		},
 		set_relay: {
-			name: 'Set relay state',
+			name: 'Set coil (relay) state',
 			options: [
 				{
 					id: 'channel',
 					type: 'dropdown',
-					label: 'Relay',
+					label: 'Coil (Relay)',
 					default: 1,
 					choices: relayChoices,
 				},
@@ -29,7 +56,7 @@ export function UpdateActions(self: ModuleInstance): void {
 					type: 'dropdown',
 					label: 'Action',
 					default: 'toggle',
-					choices: [...actionChoices],
+					choices: [...relayActionChoices],
 				},
 			],
 			callback: async (event) => {
@@ -37,14 +64,14 @@ export function UpdateActions(self: ModuleInstance): void {
 			},
 		},
 		set_all_relays: {
-			name: 'Set all relays',
+			name: 'Set all coils (relays)',
 			options: [
 				{
 					id: 'action',
 					type: 'dropdown',
 					label: 'Action',
 					default: 'toggle',
-					choices: [...actionChoices],
+					choices: [...relayActionChoices],
 				},
 			],
 			callback: async (event) => {
@@ -52,12 +79,12 @@ export function UpdateActions(self: ModuleInstance): void {
 			},
 		},
 		pulse_relay: {
-			name: 'Pulse relay',
+			name: 'Pulse coil (relay)',
 			options: [
 				{
 					id: 'channel',
 					type: 'dropdown',
-					label: 'Relay',
+					label: 'Coil (Relay)',
 					default: 1,
 					choices: relayChoices,
 				},
@@ -75,7 +102,7 @@ export function UpdateActions(self: ModuleInstance): void {
 			},
 		},
 		poll_now: {
-			name: 'Poll relay and input state now',
+			name: 'Poll coil/input/register state now',
 			options: [],
 			callback: async () => {
 				await self.forcePoll()

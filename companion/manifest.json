@@ -2,7 +2,7 @@
 	"id": "generic-modbus",
 	"name": "generic-modbus",
 	"shortname": "Modbus TCP",
-	"description": "Companion module to control Modbus TCP relays",
+	"description": "Companion module for generic Modbus TCP coil, digital input, and register devices including Waveshare relay boards",
 	"version": "0.0.0",
 	"license": "MIT",
 	"repository": "git+https://github.com/themusicnerd/companion-module-generic-modbus.git",
@@ -21,6 +21,6 @@
 	},
 	"legacyIds": [],
 	"manufacturer": "Generic",
-	"products": ["Modbus"],
-	"keywords": []
+	"products": ["Modbus TCP Relay", "Modbus TCP I/O"],
+	"keywords": ["modbus", "relay", "digital-input", "tcp", "waveshare", "poe", "eth"]
 }
